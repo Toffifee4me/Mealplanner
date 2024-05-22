@@ -169,7 +169,7 @@ public class MainGUI {
         buttonAI.addActionListener(e -> {
             //TestAI tAI = new TestAI(dayPanels, profile);
             AIHandler aiH = new AIHandler(dayPanels,profile);
-            LPTest lpt = new LPTest(dayPanels,profile);
+            //LPTest lpt = new LPTest(dayPanels,profile);
             //updateListSize();
             frame.validate();
             frame.repaint();
