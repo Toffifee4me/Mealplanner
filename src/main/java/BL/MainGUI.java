@@ -1,6 +1,7 @@
 package BL;
 
 import AI.AIHandler;
+import AI.LPTest;
 import Data.Day;
 import Data.Meal;
 import Data.Profile;
@@ -168,6 +169,7 @@ public class MainGUI {
         buttonAI.addActionListener(e -> {
             //TestAI tAI = new TestAI(dayPanels, profile);
             AIHandler aiH = new AIHandler(dayPanels,profile);
+            LPTest lpt = new LPTest(dayPanels,profile);
             //updateListSize();
             frame.validate();
             frame.repaint();
