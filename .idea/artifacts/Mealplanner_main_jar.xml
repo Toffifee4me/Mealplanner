@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Mealplanner.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Mealplanner_main_jar</output-path>
+    <root id="archive" name="Mealplanner.main.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Mealplanner.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.formdev/flatlaf/3.4.1/59161ce93728eaec725a26d646f7eff1d363decd/flatlaf-3.4.1.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Gradle: com.formdev:flatlaf:3.4.1" />
+      <element id="dir-copy" path="$PROJECT_DIR$/build/resources" />
+    </root>
+  </artifact>
+</component>
