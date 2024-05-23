@@ -1,12 +1,11 @@
-package BL;
+package bl;
 
-import AI.AIHandler;
-import AI.LPTest;
-import Data.Day;
-import Data.Meal;
-import Data.Profile;
-import Events.MyEvent;
-import Events.MyEventListener;
+import ai.DataHandler;
+import data.Day;
+import data.Meal;
+import data.Profile;
+import events.MyEvent;
+import events.MyEventListener;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -62,14 +61,15 @@ public class MainGUI {
         panelTR.setBorder(new TitledBorder("Profiles"));
         panelBot.setBorder(new TitledBorder("Weekly progress"));
 
+        LinkedList<Profile> profiles= io.loadProfiles();
         //Default Data
-        ccbm = new CustomComboBoxModel(io.loadProfiles());
-        if (ccbm.getProfiles().isEmpty()) {
+        if (profiles.isEmpty()) {
             LinkedList<Day> dl = new LinkedList<>();
             dl.add(new Day("Default", new LinkedList<Meal>()));
             Profile profile = new Profile("Default", dl, new int[]{0, 0, 0, 0});
-            ccbm.addProfiles(profile);
+            profiles.add(profile);
         }
+        ccbm = new CustomComboBoxModel(profiles);
         profile = ccbm.getProfiles().getFirst();
 
         //Setup GUI
@@ -165,11 +165,10 @@ public class MainGUI {
         panelTR.add(addButton);
         panelTop.add(panelTR, BorderLayout.EAST);
 
-        JButton buttonAI = new JButton("AI");
+        JButton buttonAI = new JButton("ai");
         buttonAI.addActionListener(e -> {
-            //TestAI tAI = new TestAI(dayPanels, profile);
-            AIHandler aiH = new AIHandler(dayPanels,profile);
-            //LPTest lpt = new LPTest(dayPanels,profile);
+            DataHandler dh = new DataHandler(dayPanels,profile);
+            dh.updatePanels(dh.getDayList());
             //updateListSize();
             frame.validate();
             frame.repaint();

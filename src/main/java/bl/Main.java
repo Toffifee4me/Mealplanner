@@ -1,4 +1,4 @@
-package BL;
+package bl;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class Main {

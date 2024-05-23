@@ -1,5 +1,5 @@
-package BL;
-import Data.Profile;
+package bl;
+import data.Profile;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataListener;

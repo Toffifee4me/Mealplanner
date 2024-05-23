@@ -1,8 +1,6 @@
-package Data;
+package data;
 
 import java.util.LinkedList;
-
-import static java.lang.Math.abs;
 
 public class Score implements Comparable<Score>{
     private double weeklyscore;

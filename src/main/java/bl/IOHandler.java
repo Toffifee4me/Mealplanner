@@ -1,7 +1,7 @@
-package BL;
+package bl;
 
-import Data.Meal;
-import Data.Profile;
+import data.Meal;
+import data.Profile;
 
 import javax.swing.*;
 import java.io.*;
@@ -13,9 +13,9 @@ import java.util.LinkedList;
 public class IOHandler {
 
 
-    private File mealPath;
-    private File profilePath;
-    private File mealPathcsv;
+    private final File mealPath;
+    private final File profilePath;
+    private final File mealPathcsv;
 
     public IOHandler() {
         URL resource = Main.class.getResource("/Meals.ser");

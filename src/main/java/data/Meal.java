@@ -1,9 +1,7 @@
-package Data;
+package data;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.Objects;
 
 public class Meal implements Serializable {
@@ -101,10 +99,9 @@ public class Meal implements Serializable {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof Meal)) {
+        if (!(o instanceof Meal m)) {
             return false;
         }
-        Meal m = (Meal) o;
         return Objects.equals(name,m.name);
     }
 

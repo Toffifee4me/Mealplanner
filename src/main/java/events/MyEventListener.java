@@ -1,7 +1,7 @@
-package Events;
+package events;
 
 import java.util.EventListener;
 
 public interface MyEventListener extends EventListener {
-    public void handleMyEvent(MyEvent event);
+    void handleMyEvent(MyEvent event);
 }

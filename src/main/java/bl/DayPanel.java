@@ -1,9 +1,9 @@
-package BL;
+package bl;
 
-import Data.Day;
-import Data.Meal;
-import Events.MyEvent;
-import Events.MyEventListener;
+import data.Day;
+import data.Meal;
+import events.MyEvent;
+import events.MyEventListener;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -28,9 +28,9 @@ public class DayPanel extends JPanel {
     private final JLabel labelCal;
     private final JList<Meal> labelMenu;
     private final JLabel labelName;
-    private DefaultListModel<Meal> dlm;
+    private final DefaultListModel<Meal> dlm;
 
-    private ArrayList<MyEventListener> listeners = new ArrayList<MyEventListener>();
+    private final ArrayList<MyEventListener> listeners = new ArrayList<MyEventListener>();
 
     public DayPanel(Day day) {
         this.day = day;

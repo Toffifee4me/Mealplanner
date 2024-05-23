@@ -1,12 +1,9 @@
-package BL;
+package bl;
 
-import Data.Meal;
-import com.formdev.flatlaf.ui.FlatBorder;
+import data.Meal;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 
 public class CustomCellRenderer extends JLabel implements ListCellRenderer<Meal> {

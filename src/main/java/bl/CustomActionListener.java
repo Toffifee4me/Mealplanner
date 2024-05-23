@@ -1,6 +1,6 @@
-package BL;
+package bl;
 
-import Data.Profile;
+import data.Profile;
 
 import javax.swing.*;
 import java.awt.*;

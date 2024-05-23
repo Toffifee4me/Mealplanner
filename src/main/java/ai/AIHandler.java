@@ -1,10 +1,10 @@
-package AI;
+package ai;
 
-import BL.DayPanel;
-import BL.IOHandler;
-import Data.Meal;
-import Data.Profile;
-import Data.Score;
+import bl.DayPanel;
+import bl.IOHandler;
+import data.Meal;
+import data.Profile;
+import data.Score;
 
 import java.util.LinkedList;
 import java.util.Map;
