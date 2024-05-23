@@ -5,6 +5,8 @@ import BL.IOHandler;
 import Data.Meal;
 import Data.Profile;
 import Data.Score;
+import com.google.ortools.linearsolver.MPSolver;
+import com.google.ortools.linearsolver.MPVariable;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -19,67 +21,21 @@ public class LPTest {
     private LinkedList<Meal> weeklyFilter;
 
 
-    public LPTest(DayPanel[] dayPanels, Profile profile) {
-
-        LinkedList<LinkedList<Meal>> dayList;
-        dayList = computeWeek(profile.getMaxMacros(), profile);
-        for (int i = 0; i < dayPanels.length; i++) {
-            dayPanels[i].getDay().setMeals(dayList.get(i));
-            dayPanels[i].updateData();
-        }
-
-    }
-
-    public LinkedList<LinkedList<Meal>> computeWeek(int[] goals, Profile profile) {
+    public static void main(String[] args) {
+        LinkedList<Meal> dayList;
+        LinkedList<LinkedList<Meal>> weeklyMeals = new LinkedList<>();
         IOHandler io = new IOHandler();
-        weeklyFilter = new LinkedList<>();
-        int tries = 10000000;
-        Score score;
+        int[] goals = {2000,140,225,30};
         LinkedList<Meal> allMeals = io.loadMealscsv();
-        System.out.println("all" + allMeals.size());
-        LinkedList<Meal> chosenMeals;
-        LinkedList<LinkedList<Meal>> chosenWeek = new LinkedList<>();
-        TreeMap<Score, LinkedList<LinkedList<Meal>>> map = new TreeMap<>();
-        long startTime = System.currentTimeMillis();
-        for (int i = 0; i < tries; i++) {
-            chosenWeek.clear();
-            weeklyFilter.clear();
-            weeklyFilter.addAll(allMeals);
-
-            //System.out.println("all"+allMeals.size());
-            for (int j = 0; j < profile.getDays().size(); j++) {
-                chosenMeals = chooseMealsWithFilter();
-                chosenWeek.add(chosenMeals);
-            }
-            //score = getWeeklyScore(chosenWeek, goals);
-            score = getScore(chosenWeek, goals);
-            map.put(score, chosenWeek);
-            double percent = ((double) i / tries) * 100;
-            if (percent % 1 == 0) {
-                System.out.println(percent + "%");
-                if (percent % 10 == 0) {
-                    //System.out.println(percent + "%");
-                    long currTime = System.currentTimeMillis();
-                    long currTotalTime = currTime - startTime;
-                    System.out.println("Time taken so far: " + currTotalTime / 1000 + "seconds");
-                    Map.Entry<Score, LinkedList<LinkedList<Meal>>> highscore = map.lastEntry();
-                    System.out.println("Current HS: " + highscore.getKey());
-                    map.clear();
-                    map.put(highscore.getKey(), highscore.getValue());
-                }
-            }
+        for (int i = 0; i < 1; i++) {
+            dayList = chooseMealsWithLP(allMeals,goals);
+            weeklyMeals.add(dayList);
         }
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println("Total time taken: " + totalTime + " milliseconds");
-        System.out.println("Total time taken: " + totalTime / 1000 + " seconds");
-        System.out.println("Best Score " + map.lastEntry().getKey());
-        //System.out.println(outPut(map.lastEntry().getValue()));
-        //System.out.println("Goals: " + goals[0] + ";" + goals[1] + ";" + goals[2] + ";" + goals[3] + ";");
-        return map.lastEntry().getValue();
+        System.out.println(outPut(weeklyMeals));
     }
 
-    public String outPut(LinkedList<LinkedList<Meal>> meals) {
+
+    public static String outPut(LinkedList<LinkedList<Meal>> meals) {
         StringBuilder output = new StringBuilder();
         for (LinkedList<Meal> list : meals) {
             int[] macros = {0, 0, 0, 0};
@@ -95,65 +51,20 @@ public class LPTest {
         return output.toString();
     }
 
-    public LinkedList<Meal> chooseMealsWithFilter() {
+
+    public static LinkedList<Meal> chooseMealsWithLP(LinkedList<Meal> filteredMeals, int[] goals)
+    {
         LinkedList<Meal> chosenMeals = new LinkedList<>();
-        Random r1 = new Random();
-        LinkedList<Meal> dailyFilter = new LinkedList<>();
-        dailyFilter.addAll(weeklyFilter);
-        StringBuilder tags = new StringBuilder();
-
-        Meal meal;
-        int helpCnt = 0;
-        int i = 0;
-
-        while (i < r1.nextInt(3, 9)) {
-            if (tags.toString().contains("c")) {
-                dailyFilter.removeIf(mealtmp -> mealtmp.getTags().contains("c"));
-            }
-            if (tags.toString().contains("b")) {
-                dailyFilter.removeIf(mealtmp -> mealtmp.getTags().contains("b"));
-            }
-            if (dailyFilter.size() > 1) {
-                meal = dailyFilter.get(r1.nextInt(dailyFilter.size() - 1));
-            } else if (dailyFilter.size() == 1) {
-                meal = dailyFilter.getFirst();
-            } else {
-                return chosenMeals;
-            }
-
-            if (!meal.getTags().contains("d") && !meal.getTags().contains("m")) {
-                chosenMeals.add(meal);
-                tags.append(meal.getTags());
-                dailyFilter.remove(meal);
-                weeklyFilter.remove(meal);
-            }
-            if (meal.getTags().contains("d") && !meal.getTags().contains("m")) {
-
-                chosenMeals.add(meal);
-                dailyFilter.remove(meal);
-
-            }
-            if (!meal.getTags().contains("d") && meal.getTags().contains("m")) {
-
-                if (helpCnt < 2) {
-                    chosenMeals.add(meal);
-                    helpCnt++;
-                } else {
-                    dailyFilter.remove(meal);
-                    weeklyFilter.remove(meal);
-                }
-            }
-            if (meal.getTags().contains("d") && meal.getTags().contains("m")) {
-                if (helpCnt < 2) {
-                    chosenMeals.add(meal);
-                    helpCnt++;
-                } else {
-                    dailyFilter.remove(meal);
-                }
-            }
-            i++;
+        MPSolver solver = MPSolver.createSolver("SCIP");
+        if (solver == null) {
+            System.out.println("Could not create solver SCIP");
+            return chosenMeals;
         }
-        // System.out.println(tags);
+
+        MPVariable x = solver.makeIntVar(0.0, 1, "x");
+
+        System.out.println("Number of variables = " + solver.numVariables());
+
         return chosenMeals;
     }
 
