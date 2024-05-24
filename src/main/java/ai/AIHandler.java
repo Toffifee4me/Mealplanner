@@ -28,7 +28,6 @@ public class AIHandler {
             dayPanels[i].getDay().setMeals(dayList.get(i));
             dayPanels[i].updateData();
         }
-
     }
 
     /*

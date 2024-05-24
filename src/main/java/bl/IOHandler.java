@@ -5,7 +5,6 @@ import data.Profile;
 
 import javax.swing.*;
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.LinkedList;
@@ -18,20 +17,12 @@ public class IOHandler {
     private final File mealPathcsv;
 
     public IOHandler() {
-        URL resource = Main.class.getResource("/Meals.ser");
-        URL resource2 = Main.class.getResource("/Profile.ser");
-        URL resource3 = Main.class.getResource("/Meals.csv");
-        try {
-            assert resource != null;
-            this.mealPath = Paths.get(resource.toURI()).toFile();
-            assert resource2 != null;
-            this.profilePath = Paths.get(resource2.toURI()).toFile();
-            assert resource3 != null;
-            this.mealPathcsv = Paths.get(resource3.toURI()).toFile();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        this.mealPath = Paths.get(System.getProperty("user.dir") + "/Meals.ser").toFile();
+        this.profilePath = Paths.get(System.getProperty("user.dir") + "/Profile.ser").toFile();
+        this.mealPathcsv = Paths.get(System.getProperty("user.dir") + "/Meals.csv").toFile();
+        System.out.println(profilePath);
     }
+
 
     public void saveMeals(LinkedList<Meal> meals) {
         try {
@@ -55,7 +46,7 @@ public class IOHandler {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] arr = line.split(";");
-                URL resource = Main.class.getResource("/"+arr[6]);
+                URL resource = Main.class.getResource("/" + arr[6]);
                 assert resource != null;
                 meals.add(new Meal(arr[0], Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), Integer.parseInt(arr[3]), Integer.parseInt(arr[4]), arr[5].split(":"), new ImageIcon(resource), arr[7]));
             }
@@ -134,6 +125,7 @@ public class IOHandler {
             }
             ois.close();
             fis.close();
+            System.out.println(profiles.size());
             System.out.println("Profiles.ser loaded");
         } catch (FileNotFoundException e) {
             System.out.println("Profile file not found");
